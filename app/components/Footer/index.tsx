@@ -3,21 +3,22 @@ import Link from 'next/link';
 
 // Updated data arrays to match the new design
 const quickLinks = [
-    { name: 'Programmes', href: '#Programs' },
-    { name: 'À Propos', href: '#About' },
-    { name: 'Témoignages', href: '#Testimonials' },
-    { name: 'Contact', href: '#Contact' },
+    { name: 'Accueil', href: '/#' },
+    { name: 'À Propos', href: '/#About' },
+    { name: 'Programs', href: '/#Programs' },
+    { name: 'Contact', href: '/#Contact' },
 ];
 
+
 const programs = [
-    { name: 'Infirmier(ère) Polyvalent(e)', href: '#' },
-    { name: 'Infirmier(ère) Auxiliaire', href: '#' },
-    { name: 'Assistant(e) Infirmier(ère)', href: '#' },
+    { name: 'Infirmier(ère) Polyvalent(e)', href: '/admission/infirmier-polyvalent' },
+    { name: 'Infirmier(ère) Auxiliaire', href: '/admission/infirmier-auxiliaire' },
+    { name: 'Assistant(e) Infirmier(ère)', href: '/admission/aide-soignant' },
 ];
 
 export default function Footer() {
     return (
-        <footer className="bg-slate-800 border-t border-slate-800">
+        <footer className="bg-slate-700 border-t border-slate-700">
             {/* Main Footer Content */}
             <div className="mx-auto max-w-7xl px-6 py-16 sm:py-24 lg:px-8">
                 <div className="xl:grid xl:grid-cols-3 xl:gap-8">
@@ -68,11 +69,12 @@ export default function Footer() {
             </div>
 
             {/* Bottom Copyright Bar */}
-            <div className="border-t border-yellow-500/20 py-8">
+            <div className="border-t border-[#8AC14B]/20 py-8">
                 <p className="text-center text-xs leading-5 text-gray-400">
                     © {new Date().getFullYear()} Académie Privée Paramédicale Africaine. Tous droits réservés.
                 </p>
             </div>
+        
         </footer>
     );
 }

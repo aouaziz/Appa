@@ -33,7 +33,7 @@ const socialLinks = [
 
 export default function ContactInfo() {
   return (
-    <div className="space-y-10">
+    <div className=" space-y-10 ">
       <div className="flex gap-x-6">
         <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-slate-800">
           <MapPinIcon className="h-6 w-6 text-lime-400" aria-hidden="true" />
@@ -53,7 +53,7 @@ export default function ContactInfo() {
         </div>
         <div>
           <h3 className="text-base font-semibold leading-7 text-white">Téléphone</h3>
-          <p className="mt-2 leading-7 text-gray-300">+212 665 72 10 81</p>
+          <p className="mt-2 leading-7 text-gray-300">0665 72 10 81</p>
         </div>
       </div>
       

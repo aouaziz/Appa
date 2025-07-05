@@ -82,12 +82,13 @@ export default function ContactForm() {
     }
   };
 
+
   const labelClasses = "block text-sm font-semibold leading-6 text-gray-300";
-  const inputClasses = "block w-full rounded-md border-0 bg-slate-900/50 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-slate-700 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6 disabled:opacity-50";
-  const requiredMark = <span className="text-blue-400">*</span>;
+  const inputClasses = "block w-full rounded-md border-0 bg-slate-900/50 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-slate-700 focus:ring-2 focus:ring-inset focus:ring-[#0875B5] sm:text-sm sm:leading-6 disabled:opacity-50";
+  const requiredMark = <span className="text-[#8AC14B]">*</span>;
 
   return (
-    <form onSubmit={handleSubmit} className="rounded-2xl bg-slate-800/70 p-8 shadow-2xl">
+    <form onSubmit={handleSubmit} className="rounded-2xl bg-slate-700 p-8 ">
       <h3 className="text-xl font-semibold leading-7 text-white mb-8">Le Formulaire De Pré-Inscription</h3>
       <div className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8">
         <div>
@@ -218,10 +219,10 @@ export default function ContactForm() {
         </div>
       </div>
       
-      <div className="mt-10">
+     <div className="mt-10">
         <button 
           type="submit" 
-          className="block w-full rounded-md bg-blue-600 px-3.5 py-2.5 text-center uppercase text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:bg-gray-500 disabled:cursor-not-allowed" 
+          className="block w-full rounded-md bg-[#0875B5] px-3.5 py-2.5 text-center uppercase text-sm font-semibold text-white shadow-sm hover:bg-[#3BA9DF] focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-[#0875B5] disabled:bg-gray-500 disabled:cursor-not-allowed" 
           disabled={status === 'submitting'}
         >
           {status === 'submitting' ? 'Envoi en cours...' : 'Envoyer votre candidature'}

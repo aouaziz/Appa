@@ -1,7 +1,6 @@
 import About from "./components/About";
 import Banner from "./components/Banner";
 import Contact from "./components/Contact";
-import Footer from "./components/Footer";
 import Location from "./components/Location";
 import Programs from "./components/Programs";
 
@@ -11,9 +10,13 @@ export default function Home() {
     <Banner/>
     <About/>
     <Programs/>
-    <Location/>
-    <Contact/>
-    <Footer/>
+    <div className="relative">
+      <Location />
+      <div className="relative z-10 -mt-60">
+        <Contact />
+      </div>
+    </div>
+
    </main>
   );
 }

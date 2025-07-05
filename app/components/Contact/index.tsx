@@ -3,15 +3,15 @@ import ContactInfo from "../ContactInfo";
 
 export default function Contact() {
   return (
-    <div id="Contact" className="relative isolate bg-slate-900 py-24 sm:py-32">
+    <div id="Contact" className="relative isolate bg-slate-600 py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* Header */}
         <div className="mx-auto max-w-4xl text-center">
           <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-            Contactez-Nous
+            Pré-inscription en ligne
           </h2>
           <p className="mt-2 text-lg leading-8 text-gray-300">
-            Prêt à commencer votre carrière dans les soins de santé? Contactez-nous aujourd'hui pour en savoir plus sur nos programmes.
+            pour l'année 2025/2026
           </p>
         </div>
 

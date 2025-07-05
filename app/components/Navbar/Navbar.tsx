@@ -15,10 +15,10 @@ interface NavigationItem {
 }
 
 const navigation: NavigationItem[] = [
-    { name: 'Accueil', href: '#' },
-    { name: 'À Propos', href: '#About' },
-    { name: 'Programs', href: '#Programs' },
-    { name: 'Contact', href: '#Contact' },
+  { name: 'Accueil', href: '/#' },
+    { name: 'À Propos', href: '/#About' },
+    { name: 'Programs', href: '/#Programs' },
+    { name: 'Contact', href: '/#Contact' },
 ];
 
 function classNames(...classes: string[]) {
@@ -104,7 +104,7 @@ const Navbar = () => {
                                             <span
                                                 className={classNames(
                                                     item.href === currentLink ? 'active-link-underline font-semibold' : 'font-normal opacity-90 hover:opacity-100',
-                                                    'text-blue-900 transition-all duration-300' 
+                                                    'text-black transition-all duration-300' 
                                                 )}
                                             >
                                                 {item.name}
