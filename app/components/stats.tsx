@@ -48,7 +48,7 @@ export default function Stats() {
         >
           <h2 className="text-4xl lg:text-5xl font-bold text-white mb-4">Pourquoi Choisir APPA ?</h2>
           <p className="text-xl text-white/80 max-w-2xl mx-auto">
-            Découvrez les valeurs et l&apos;engagement qui font de notre académie un choix d&apos;excellence
+            Découvrez les valeurs et l'engagement qui font de notre académie un choix d'excellence
           </p>
         </motion.div>
 

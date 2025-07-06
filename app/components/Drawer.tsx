@@ -12,7 +12,7 @@ const Drawer = ({ children, isOpen, setIsOpen }: DrawerProps) => {
   const handleLogoClick = () => {
     setIsOpen(false);
     setTimeout(() => {
-      window.scrollTo({ top: 0, behavior: &apos;smooth&apos; });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }, 300);
   };
   const logo = "/logo.webp" ;

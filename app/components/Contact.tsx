@@ -4,7 +4,7 @@ import type React from "react"
 import { motion } from "framer-motion"
 import { useInView } from "framer-motion"
 import { useRef, useState } from "react"
-import { useRouter } from &apos;next/navigation&apos;
+import { useRouter } from 'next/navigation'
 
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
@@ -141,11 +141,11 @@ export default function Contact() {
       const firstErrorField = Object.keys(errors)[0];
       const errorElement = document.getElementById(firstErrorField);
       if (errorElement) {
-        errorElement.scrollIntoView({ behavior: &apos;smooth&apos;, block: &apos;center&apos; });
-      } else if (firstErrorField === &apos;consent&apos;) {
-        const consentElement = document.getElementById(&apos;consent&apos;);
+        errorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else if (firstErrorField === 'consent') {
+        const consentElement = document.getElementById('consent');
         if (consentElement) {
-          consentElement.scrollIntoView({ behavior: &apos;smooth&apos;, block: &apos;center&apos; });
+          consentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
       }
       return;
@@ -165,10 +165,10 @@ export default function Contact() {
           Nom complet: ${formData.fullName}
           Téléphone: ${formData.phone}
           Email: ${formData.email}
-          Date de naissance: ${formData.dob || &apos;Non spécifié&apos;}
-          Niveau d&apos;étude: ${formData.studyLevel || &apos;Non spécifié&apos;}
-          Formation souhaitée: ${formData.trainingSought || &apos;Non spécifié&apos;}
-          Consentement: ${formData.consent ? &apos;Oui&apos; : &apos;Non&apos;}
+          Date de naissance: ${formData.dob || 'Non spécifié'}
+          Niveau d'étude: ${formData.studyLevel || 'Non spécifié'}
+          Formation souhaitée: ${formData.trainingSought || 'Non spécifié'}
+          Consentement: ${formData.consent ? 'Oui' : 'Non'}
         `,
       };
 
@@ -187,8 +187,8 @@ export default function Contact() {
       });
 
     } catch (error: any) {
-      console.error(&apos;Error submitting form via API:&apos;, error);
-      alert(`Échec de l&apos;envoi du formulaire: ${error.message || &apos;Une erreur inconnue est survenue.&apos;}`);
+      console.error('Error submitting form via API:', error);
+      alert(`Échec de l'envoi du formulaire: ${error.message || 'Une erreur inconnue est survenue.'}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -236,7 +236,7 @@ export default function Contact() {
           className="text-center mb-16"
         >
           <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6">Pré-inscription en ligne</h2>
-          <p className="text-xl text-white/80 mb-2">pour l&apos;année 2025/2026</p>
+          <p className="text-xl text-white/80 mb-2">pour l'année 2025/2026</p>
           <div className="w-24 h-1 bg-gradient-to-r from-green-400 to-teal-300 mx-auto rounded-full"></div>
         </motion.div>
 
@@ -319,7 +319,7 @@ export default function Contact() {
                         value={formData.fullName}
                         onChange={(e) => handleInputChange("fullName", e.target.value)}
                         placeholder="Votre nom complet"
-                        className={`bg-white/10 border-white/20 text-white placeholder:text-white/60 ${validationErrors.fullName ? &apos;border-red-500&apos; : &apos;&apos;}`}
+                        className={`bg-white/10 border-white/20 text-white placeholder:text-white/60 ${validationErrors.fullName ? 'border-red-500' : ''}`}
                         required
                       />
                       {validationErrors.fullName && (
@@ -336,7 +336,7 @@ export default function Contact() {
                         value={formData.phone}
                         onChange={(e) => handleInputChange("phone", e.target.value)}
                         placeholder="06 XX XX XX XX"
-                        className={`bg-white/10 border-white/20 text-white placeholder:text-white/60 ${validationErrors.phone ? &apos;border-red-500&apos; : &apos;&apos;}`}
+                        className={`bg-white/10 border-white/20 text-white placeholder:text-white/60 ${validationErrors.phone ? 'border-red-500' : ''}`}
                         required
                       />
                       {validationErrors.phone && (
@@ -356,11 +356,11 @@ export default function Contact() {
                         value={formData.email}
                         onChange={(e) => handleInputChange("email", e.target.value)}
                         placeholder="votre@email.com"
-                        className={`bg-white/10 border-white/20 text-white placeholder:text-white/60 ${validationErrors.email ? &apos;border-red-500&apos; : &apos;&apos;}`}
+                        className={`bg-white/10 border-white/20 text-white placeholder:text-white/60 ${validationErrors.email ? 'border-red-500' : ''}`}
                         required
                       />
                       {validationErrors.email && (
-                        <p className="text-red-400 text-sm mt-1">L&apos;adresse email est requise et doit être valide.</p>
+                        <p className="text-red-400 text-sm mt-1">L'adresse email est requise et doit être valide.</p>
                       )}
                     </div>
                     <div className="space-y-2">
@@ -372,7 +372,7 @@ export default function Contact() {
                         type="date"
                         value={formData.dob}
                         onChange={(e) => handleInputChange("dob", e.target.value)}
-                        className={`bg-white/10 border-white/20 text-white ${validationErrors.dob ? &apos;border-red-500&apos; : &apos;&apos;}`}
+                        className={`bg-white/10 border-white/20 text-white ${validationErrors.dob ? 'border-red-500' : ''}`}
                         required
                       />
                       {validationErrors.dob && (
@@ -384,13 +384,13 @@ export default function Contact() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label className="text-white">
-                        Niveau d&apos;étude <span className="text-red-400">*</span>
+                        Niveau d'étude <span className="text-red-400">*</span>
                       </Label>
                       <Select
                         value={formData.studyLevel}
                         onValueChange={(value) => handleInputChange("studyLevel", value)}
                       >
-                        <SelectTrigger id="studyLevel" className={`bg-white/10 border-white/20 text-white ${validationErrors.studyLevel ? &apos;border-red-500&apos; : &apos;&apos;}`}>
+                        <SelectTrigger id="studyLevel" className={`bg-white/10 border-white/20 text-white ${validationErrors.studyLevel ? 'border-red-500' : ''}`}>
                           <SelectValue placeholder="Sélectionner votre niveau" />
                         </SelectTrigger>
                         <SelectContent className="bg-white border-gray-200">
@@ -406,7 +406,7 @@ export default function Contact() {
                         </SelectContent>
                       </Select>
                       {validationErrors.studyLevel && (
-                        <p className="text-red-400 text-sm mt-1">Votre niveau d&apos;étude est requis.</p>
+                        <p className="text-red-400 text-sm mt-1">Votre niveau d'étude est requis.</p>
                       )}
                     </div>
                     <div className="space-y-2">
@@ -417,7 +417,7 @@ export default function Contact() {
                         value={formData.trainingSought}
                         onValueChange={(value) => handleInputChange("trainingSought", value)}
                       >
-                        <SelectTrigger id="trainingSought" className={`bg-white/10 border-white/20 text-white ${validationErrors.trainingSought ? &apos;border-red-500&apos; : &apos;&apos;}`}>
+                        <SelectTrigger id="trainingSought" className={`bg-white/10 border-white/20 text-white ${validationErrors.trainingSought ? 'border-red-500' : ''}`}>
                           <SelectValue placeholder="Choisir une formation" />
                         </SelectTrigger>
                         <SelectContent className="bg-white border-gray-200">
@@ -444,11 +444,11 @@ export default function Contact() {
                         id="consent"
                         checked={formData.consent}
                         onCheckedChange={(checked) => handleInputChange("consent", checked as boolean)}
-                        className={`border-white/40 data-[state=checked]:bg-green-500 ${validationErrors.consent ? &apos;border-red-500&apos; : &apos;&apos;}`}
+                        className={`border-white/40 data-[state=checked]:bg-green-500 ${validationErrors.consent ? 'border-red-500' : ''}`}
                         required
                       />
-                      <Label htmlFor="consent" className={`text-sm text-white/90 leading-relaxed ${validationErrors.consent ? &apos;text-red-400&apos; : &apos;&apos;}`}>
-                        J&apos;accepte de recevoir des informations d&apos;orientation et des conseils par téléphone pour m&apos;aider
+                      <Label htmlFor="consent" className={`text-sm text-white/90 leading-relaxed ${validationErrors.consent ? 'text-red-400' : ''}`}>
+                        J'accepte de recevoir des informations d'orientation et des conseils par téléphone pour m'aider
                         dans mon parcours professionnel. <span className="text-red-400">*</span>
                       </Label>
                     </div>
