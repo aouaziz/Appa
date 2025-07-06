@@ -27,7 +27,7 @@ export async function POST(request: Request) {
     if (!data || !data.name || !data.email || !data.subject || !data.message) {
       return NextResponse.json({ message: "Missing required fields in request body." }, { status: 400 });
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Failed to parse request body:", error);
     return NextResponse.json({ message: "Invalid JSON body." }, { status: 400 });
   }
@@ -61,8 +61,8 @@ export async function POST(request: Request) {
     console.log('Email sent successfully via Resend:', resendData);
     return NextResponse.json({ success: true }, { status: 200 });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Unexpected error in API route:', error);
-    return NextResponse.json({ message: error.message || 'An unexpected error occurred.' }, { status: 500 });
+    return NextResponse.json({ message: (error instanceof Error ? error.message : 'An unexpected error occurred.') }, { status: 500 });
   }
 }

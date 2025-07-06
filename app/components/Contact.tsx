@@ -4,8 +4,6 @@ import type React from "react"
 import { motion } from "framer-motion"
 import { useInView } from "framer-motion"
 import { useRef, useState } from "react"
-import { useRouter } from 'next/navigation'
-
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
 import { Label } from "./ui/label"
@@ -16,15 +14,7 @@ import { MapPin, Phone, Mail, Send, Facebook, Instagram, Youtube, CheckCircle } 
 
 import { sendContactForm } from "../lib/api"
 
-interface FormData {
-  fullName: string
-  phone: string
-  email: string
-  dob: string
-  studyLevel: string
-  trainingSought: string
-  consent: boolean
-}
+
 
 const contactInfo = [
   {
@@ -93,7 +83,6 @@ export default function Contact() {
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
 
-  const router = useRouter();
 
   const handleInputChange = (name: keyof typeof formData, value: string | boolean) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -186,9 +175,13 @@ export default function Contact() {
         consent: false,
       });
 
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error submitting form via API:', error);
-      alert(`Échec de l'envoi du formulaire: ${error.message || 'Une erreur inconnue est survenue.'}`);
+      alert(
+        `Échec de l&apos;envoi du formulaire: ${
+          error instanceof Error ? error.message : 'Une erreur inconnue est survenue.'
+        }`
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -236,7 +229,7 @@ export default function Contact() {
           className="text-center mb-16"
         >
           <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6">Pré-inscription en ligne</h2>
-          <p className="text-xl text-white/80 mb-2">pour l'année 2025/2026</p>
+          <p className="text-xl text-white/80 mb-2">pour l&apos;année 2025/2026</p>
           <div className="w-24 h-1 bg-gradient-to-r from-green-400 to-teal-300 mx-auto rounded-full"></div>
         </motion.div>
 
@@ -360,7 +353,7 @@ export default function Contact() {
                         required
                       />
                       {validationErrors.email && (
-                        <p className="text-red-400 text-sm mt-1">L'adresse email est requise et doit être valide.</p>
+                        <p className="text-red-400 text-sm mt-1">L&apos;adresse email est requise et doit être valide.</p>
                       )}
                     </div>
                     <div className="space-y-2">
@@ -384,7 +377,7 @@ export default function Contact() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label className="text-white">
-                        Niveau d'étude <span className="text-red-400">*</span>
+                        Niveau d&apos;étude <span className="text-red-400">*</span>
                       </Label>
                       <Select
                         value={formData.studyLevel}
@@ -406,7 +399,7 @@ export default function Contact() {
                         </SelectContent>
                       </Select>
                       {validationErrors.studyLevel && (
-                        <p className="text-red-400 text-sm mt-1">Votre niveau d'étude est requis.</p>
+                        <p className="text-red-400 text-sm mt-1">Votre niveau d&apos;étude est requis.</p>
                       )}
                     </div>
                     <div className="space-y-2">
@@ -448,7 +441,7 @@ export default function Contact() {
                         required
                       />
                       <Label htmlFor="consent" className={`text-sm text-white/90 leading-relaxed ${validationErrors.consent ? 'text-red-400' : ''}`}>
-                        J'accepte de recevoir des informations d'orientation et des conseils par téléphone pour m'aider
+                        J&apos;accepte de recevoir des informations d&apos;orientation et des conseils par téléphone pour m&apos;aider
                         dans mon parcours professionnel. <span className="text-red-400">*</span>
                       </Label>
                     </div>

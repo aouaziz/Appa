@@ -3,7 +3,7 @@
 import { motion } from "framer-motion"
 import { useInView } from "framer-motion"
 import { useRef } from "react"
-import { CheckCircle, Target, Users, Lightbulb } from "lucide-react"
+import { Target, Users, Lightbulb } from "lucide-react"
 
 const highlights = [
   {
@@ -22,18 +22,10 @@ const highlights = [
     icon: Lightbulb,
     title: "Notre Vision",
     description:
-      "Devenir la référence en formation paramédicale en Afrique, reconnue pour l'excellence de ses programmes et la qualité de ses diplômés.",
+      "Devenir la référence en formation paramédicale en Afrique, reconnue pour l&apos;excellence de ses programmes et la qualité de ses diplômés.",
   },
 ]
 
-const achievements = [
-  "Programmes certifiés et reconnus",
-  "Corps professoral expérimenté",
-  "Équipements modernes et laboratoires",
-  "Partenariats avec les hôpitaux",
-  "Suivi personnalisé des étudiants",
-  "Formation pratique intensive",
-]
 
 export default function About() {
   const ref = useRef(null)
@@ -65,7 +57,7 @@ export default function About() {
               transition={{ duration: 0.8, delay: 0.3 }}
               className="text-4xl lg:text-6xl font-bold text-gray-900 leading-tight"
             >
-              Bienvenue à l'
+              Bienvenue à l&apos;
               <span className="block text-blue-600 mt-2">African Paramedical</span>
               <span className="block text-teal-600">Private Academy</span>
             </motion.h2>
@@ -76,7 +68,7 @@ export default function About() {
               transition={{ duration: 0.6, delay: 0.5 }}
               className="text-xl text-gray-600 leading-relaxed"
             >
-              APPA s'engage à former la prochaine génération de professionnels de santé avec des standards d'excellence
+              APPA s&apos;engage à former la prochaine génération de professionnels de santé avec des standards d&apos;excellence
               reconnus. Notre académie offre des formations spécialisées en soins infirmiers et paramédicaux, adaptées
               aux besoins du secteur de la santé au Maroc et en Afrique.
             </motion.p>

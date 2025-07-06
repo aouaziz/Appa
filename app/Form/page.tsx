@@ -156,7 +156,7 @@ export default function FormPage() {
     }
     // --- End Validation Step ---
 
-    setValidationErrors({}); // Clear any previous validation errors
+    setValidationErrors({}); // Clear MyType previous validation errors
     setIsSubmitting(true);
 
     try {
@@ -198,10 +198,14 @@ export default function FormPage() {
         consent: false,
       });
 
-    } catch (error: any) { // Use 'any' or a more specific error type if you have one
+    } catch (error: unknown) { // Use 'MyType' or a more specific error type if you have one
       console.error('Error submitting form via API:', error);
       // sendContactForm now throws an Error with a message from the API
-      alert(`Échec de l'envoi du formulaire: ${error.message || 'Une erreur inconnue est survenue.'}`);
+      const errorMessage =
+        typeof error === "object" && error !== null && "message" in error
+          ? (error as { message?: string }).message
+          : undefined;
+      alert(`Échec de l'envoi du formulaire: ${errorMessage || 'Une erreur inconnue est survenue.'}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -246,7 +250,7 @@ export default function FormPage() {
                              router.push('/'); // Navigate using router
                          }}
                       >
-                         <ArrowLeft className="w-4 h-4 mr-2"/> Retour à l'accueil
+                         <ArrowLeft className="w-4 h-4 mr-2"/> Retour à l&apos;accueil
                       </Button>
                     </Link>
                     {/* --- END MODIFIED LINK --- */}
@@ -414,7 +418,7 @@ export default function FormPage() {
                           required
                         />
                         {validationErrors.email && (
-                          <p className="text-red-500 text-sm mt-1">L'adresse email est requise et doit être valide.</p>
+                          <p className="text-red-500 text-sm mt-1">L&apos;adresse email est requise et doit être valide.</p>
                         )}
                       </div>
                       <div className="space-y-2">
@@ -438,7 +442,7 @@ export default function FormPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <Label className="text-gray-700 font-semibold">
-                          Niveau d'étude <span className="text-red-500">*</span>
+                          Niveau d&apos;étude <span className="text-red-500">*</span>
                         </Label>
                         <Select
                           value={formData.studyLevel}
@@ -460,7 +464,7 @@ export default function FormPage() {
                           </SelectContent>
                         </Select>
                          {validationErrors.studyLevel && (
-                          <p className="text-red-500 text-sm mt-1">Votre niveau d'étude est requis.</p>
+                          <p className="text-red-500 text-sm mt-1">Votre niveau d&apos;étude est requis.</p>
                         )}
                       </div>
                       <div className="space-y-2">
@@ -502,7 +506,7 @@ export default function FormPage() {
                           required
                         />
                         <Label htmlFor="consent" className={`text-sm text-gray-700 leading-relaxed ${validationErrors.consent ? 'text-red-500' : ''}`}>
-                          J'accepte de recevoir des informations d'orientation et des conseils par téléphone pour m'aider
+                          J&apos;accepte de recevoir des informations d&apos;orientation et des conseils par téléphone pour m&apos;aider
                           dans mon parcours professionnel. <span className="text-red-500">*</span>
                         </Label>
                       </div>
