@@ -1,9 +1,17 @@
-import ProgramDetailPageClient from "./ProgramDetailPageClient";
+import { programsData } from "@/app/data/programs"
+import ProgramDetailPageClient from "./ProgramDetailPageClient"
 
-export default function ProgramDetailPage({
-  params,
-}: {
-  params: { slug: string };
+export async function generateStaticParams() {
+  return programsData.map((program) => ({
+    slug: program.slug,
+  }))
+}
+
+export default async function ProgramDetailPage({ 
+  params 
+}: { 
+  params: Promise<{ slug: string }> 
 }) {
-  return <ProgramDetailPageClient slug={params.slug} />;
+  const { slug } = await params
+  return <ProgramDetailPageClient slug={slug} />
 }
