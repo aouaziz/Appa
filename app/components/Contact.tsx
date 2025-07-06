@@ -1,10 +1,11 @@
 "use client"
 
 import type React from "react"
-
 import { motion } from "framer-motion"
 import { useInView } from "framer-motion"
 import { useRef, useState } from "react"
+import { useRouter } from 'next/navigation'
+
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
 import { Label } from "./ui/label"
@@ -12,6 +13,18 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { Checkbox } from "./ui/checkbox"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card"
 import { MapPin, Phone, Mail, Send, Facebook, Instagram, Youtube, CheckCircle } from "lucide-react"
+
+import { sendContactForm } from "../lib/api"
+
+interface FormData {
+  fullName: string
+  phone: string
+  email: string
+  dob: string
+  studyLevel: string
+  trainingSought: string
+  consent: boolean
+}
 
 const contactInfo = [
   {
@@ -52,7 +65,6 @@ const socialLinks = [
   },
 ]
 
-// Define the type for validation errors
 type ValidationErrors = {
   fullName?: boolean;
   phone?: boolean;
@@ -62,6 +74,8 @@ type ValidationErrors = {
   trainingSought?: boolean;
   consent?: boolean;
 };
+
+const EMAIL_SUBJECT = "Nouvelle pré-inscription (Section Contact) - APPA";
 
 export default function Contact() {
   const ref = useRef(null)
@@ -77,26 +91,34 @@ export default function Contact() {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
-  // State to track validation errors for specific fields
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
 
+  const router = useRouter();
+
   const handleInputChange = (name: keyof typeof formData, value: string | boolean) => {
-    setFormData((prev) => ({ ...prev, [name]: value }))
-    // Clear the specific error when the user interacts with the field
-    if (validationErrors[name]) {
-      setValidationErrors((prev) => ({ ...prev, [name]: false }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (validationErrors[name as keyof ValidationErrors]) {
+      setValidationErrors((prev) => ({ ...prev, [name as keyof ValidationErrors]: false }));
     }
   }
 
   const validateForm = (): ValidationErrors => {
     const errors: ValidationErrors = {};
+
     if (!formData.fullName.trim()) {
       errors.fullName = true;
     }
     if (!formData.phone.trim()) {
       errors.phone = true;
     }
-    // Assuming empty string means no level/training selected
+    if (!formData.email.trim()) {
+      errors.email = true;
+    } else if (!/\S+@\S+\.\S+/.test(formData.email.trim())) {
+      errors.email = true;
+    }
+    if (!formData.dob) {
+      errors.dob = true;
+    }
     if (!formData.studyLevel) {
       errors.studyLevel = true;
     }
@@ -106,73 +128,73 @@ export default function Contact() {
     if (!formData.consent) {
       errors.consent = true;
     }
+
     return errors;
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // --- Validation Step ---
     const errors = validateForm();
     if (Object.keys(errors).length > 0) {
-      setValidationErrors(errors); // Update state with errors
-      // Optionally, show a general alert or scroll to the first error
-      // alert('Veuillez remplir tous les champs requis.');
-      return; // Stop submission
+      setValidationErrors(errors);
+      const firstErrorField = Object.keys(errors)[0];
+      const errorElement = document.getElementById(firstErrorField);
+      if (errorElement) {
+        errorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else if (firstErrorField === 'consent') {
+        const consentElement = document.getElementById('consent');
+        if (consentElement) {
+          consentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
+      return;
     }
-    // --- End Validation Step ---
 
-    setValidationErrors({}); // Clear any previous validation errors
+    setValidationErrors({});
     setIsSubmitting(true);
 
     try {
-      const formElement = e.target as HTMLFormElement;
-      const formDataObj = new FormData(formElement);
+      const apiPayload = {
+        name: formData.fullName,
+        email: formData.email,
+        subject: EMAIL_SUBJECT,
+        message: `
+          Détails de la pré-inscription (Section Contact):
 
-      // Ensure consent value is explicitly added if not handled by checkbox name
-      // The checkbox has name="Consentement", which is good, but if you want
-      // a specific "Oui"/"Non" string representation regardless of checkbox name,
-      // you could add this back. However, with the validation check above,
-      // we know formData.consent is true if we reach this point.
-      // formDataObj.set('Consentement', formData.consent ? 'Oui' : 'Non');
+          Nom complet: ${formData.fullName}
+          Téléphone: ${formData.phone}
+          Email: ${formData.email}
+          Date de naissance: ${formData.dob || 'Non spécifié'}
+          Niveau d'étude: ${formData.studyLevel || 'Non spécifié'}
+          Formation souhaitée: ${formData.trainingSought || 'Non spécifié'}
+          Consentement: ${formData.consent ? 'Oui' : 'Non'}
+        `,
+      };
 
-      const response = await fetch('https://formsubmit.co/ayoubouaziz5@gmail.com', {
-        method: 'POST',
-        body: formDataObj
+      await sendContactForm(apiPayload);
+
+      setIsSubmitted(true);
+
+      setFormData({
+        fullName: "",
+        phone: "",
+        email: "",
+        dob: "",
+        studyLevel: "",
+        trainingSought: "",
+        consent: false,
       });
 
-      if (response.ok) {
-        setIsSubmitted(true);
-        // Reset form state
-        setFormData({
-          fullName: "",
-          phone: "",
-          email: "",
-          dob: "",
-          studyLevel: "",
-          trainingSought: "",
-          consent: false,
-        });
-      } else {
-        let errorMessage = 'Erreur lors de l\'envoi du formulaire. Veuillez réessayer.';
-         try {
-             const errorData = await response.json();
-             if (errorData && errorData.message) {
-                 errorMessage = `Erreur: ${errorData.message}`;
-             }
-         } catch (jsonError) {
-             console.error('Could not parse error response:', jsonError);
-         }
-         console.error('Form submission failed', response.status, response.statusText);
-         alert(errorMessage);
-      }
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      alert('Une erreur inattendue s\'est produite. Veuillez vérifier votre connexion et réessayer.');
+    } catch (error: any) {
+      console.error('Error submitting form via API:', error);
+      alert(`Échec de l'envoi du formulaire: ${error.message || 'Une erreur inconnue est survenue.'}`);
     } finally {
       setIsSubmitting(false);
     }
   }
+
+
 
   if (isSubmitted) {
     return (
@@ -193,12 +215,6 @@ export default function Contact() {
               <p className="text-white/80 mb-6">
                 Votre candidature a été envoyée avec succès. Nous vous contacterons bientôt.
               </p>
-              <Button
-                onClick={() => setIsSubmitted(false)}
-                className="bg-white/20 hover:bg-white/30 text-white border border-white/30"
-              >
-                Envoyer une autre candidature
-              </Button>
             </div>
           </motion.div>
         </div>
@@ -225,7 +241,6 @@ export default function Contact() {
         </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-12">
-          {/* Contact Information */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
@@ -279,7 +294,6 @@ export default function Contact() {
             </motion.div>
           </motion.div>
 
-          {/* Registration Form */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
@@ -294,11 +308,6 @@ export default function Contact() {
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-6">
-                  {/* Hidden FormSubmit fields */}
-                  <input type="hidden" name="_subject" value="Nouvelle pré-inscription - APPA" />
-                  <input type="hidden" name="_captcha" value="false" />
-                  <input type="hidden" name="_template" value="table" />
-
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="fullName" className="text-white">
@@ -306,15 +315,14 @@ export default function Contact() {
                       </Label>
                       <Input
                         id="fullName"
-                        name="Nom complet"
                         type="text"
                         value={formData.fullName}
                         onChange={(e) => handleInputChange("fullName", e.target.value)}
                         placeholder="Votre nom complet"
                         className={`bg-white/10 border-white/20 text-white placeholder:text-white/60 ${validationErrors.fullName ? 'border-red-500' : ''}`}
-                        required // Use required for browser validation fallback
+                        required
                       />
-                       {validationErrors.fullName && (
+                      {validationErrors.fullName && (
                         <p className="text-red-400 text-sm mt-1">Le nom complet est requis.</p>
                       )}
                     </div>
@@ -324,15 +332,14 @@ export default function Contact() {
                       </Label>
                       <Input
                         id="phone"
-                        name="Téléphone"
                         type="tel"
                         value={formData.phone}
                         onChange={(e) => handleInputChange("phone", e.target.value)}
                         placeholder="06 XX XX XX XX"
                         className={`bg-white/10 border-white/20 text-white placeholder:text-white/60 ${validationErrors.phone ? 'border-red-500' : ''}`}
-                        required // Use required for browser validation fallback
+                        required
                       />
-                       {validationErrors.phone && (
+                      {validationErrors.phone && (
                         <p className="text-red-400 text-sm mt-1">Le numéro de téléphone est requis.</p>
                       )}
                     </div>
@@ -341,31 +348,36 @@ export default function Contact() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="email" className="text-white">
-                        Email
+                        Email <span className="text-red-400">*</span>
                       </Label>
                       <Input
                         id="email"
-                        name="Email"
                         type="email"
                         value={formData.email}
                         onChange={(e) => handleInputChange("email", e.target.value)}
                         placeholder="votre@email.com"
-                        className="bg-white/10 border-white/20 text-white placeholder:text-white/60"
+                        className={`bg-white/10 border-white/20 text-white placeholder:text-white/60 ${validationErrors.email ? 'border-red-500' : ''}`}
+                        required
                       />
+                      {validationErrors.email && (
+                        <p className="text-red-400 text-sm mt-1">L'adresse email est requise et doit être valide.</p>
+                      )}
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="dob" className="text-white">
-                        Date de naissance
+                        Date de naissance <span className="text-red-400">*</span>
                       </Label>
                       <Input
                         id="dob"
-                        name="Date de naissance"
                         type="date"
                         value={formData.dob}
                         onChange={(e) => handleInputChange("dob", e.target.value)}
-                        className="bg-white/10 border-white/20 text-white"
+                        className={`bg-white/10 border-white/20 text-white ${validationErrors.dob ? 'border-red-500' : ''}`}
                         required
                       />
+                      {validationErrors.dob && (
+                        <p className="text-red-400 text-sm mt-1">La date de naissance est requise.</p>
+                      )}
                     </div>
                   </div>
 
@@ -377,9 +389,8 @@ export default function Contact() {
                       <Select
                         value={formData.studyLevel}
                         onValueChange={(value) => handleInputChange("studyLevel", value)}
-                        required // Use required for browser validation fallback
                       >
-                        <SelectTrigger className={`bg-white/10 border-white/20 text-white ${validationErrors.studyLevel ? 'border-red-500' : ''}`}>
+                        <SelectTrigger id="studyLevel" className={`bg-white/10 border-white/20 text-white ${validationErrors.studyLevel ? 'border-red-500' : ''}`}>
                           <SelectValue placeholder="Sélectionner votre niveau" />
                         </SelectTrigger>
                         <SelectContent className="bg-white border-gray-200">
@@ -394,9 +405,7 @@ export default function Contact() {
                           </SelectItem>
                         </SelectContent>
                       </Select>
-                      {/* Hidden input to ensure FormSubmit gets the value */}
-                      <input type="hidden" name="Niveau d'étude" value={formData.studyLevel} />
-                       {validationErrors.studyLevel && (
+                      {validationErrors.studyLevel && (
                         <p className="text-red-400 text-sm mt-1">Votre niveau d'étude est requis.</p>
                       )}
                     </div>
@@ -407,9 +416,8 @@ export default function Contact() {
                       <Select
                         value={formData.trainingSought}
                         onValueChange={(value) => handleInputChange("trainingSought", value)}
-                        required // Use required for browser validation fallback
                       >
-                        <SelectTrigger className={`bg-white/10 border-white/20 text-white ${validationErrors.trainingSought ? 'border-red-500' : ''}`}>
+                        <SelectTrigger id="trainingSought" className={`bg-white/10 border-white/20 text-white ${validationErrors.trainingSought ? 'border-red-500' : ''}`}>
                           <SelectValue placeholder="Choisir une formation" />
                         </SelectTrigger>
                         <SelectContent className="bg-white border-gray-200">
@@ -424,23 +432,20 @@ export default function Contact() {
                           </SelectItem>
                         </SelectContent>
                       </Select>
-                       {/* Hidden input to ensure FormSubmit gets the value */}
-                      <input type="hidden" name="Formation souhaitée" value={formData.trainingSought} />
-                       {validationErrors.trainingSought && (
+                      {validationErrors.trainingSought && (
                         <p className="text-red-400 text-sm mt-1">Veuillez choisir une formation.</p>
                       )}
                     </div>
                   </div>
 
-                  {/* Consent Checkbox */}
                   <div className="space-y-2">
                     <div className="flex items-start space-x-3 p-4 bg-white/5 rounded-xl">
                       <Checkbox
                         id="consent"
-                        name="Consentement"
                         checked={formData.consent}
                         onCheckedChange={(checked) => handleInputChange("consent", checked as boolean)}
                         className={`border-white/40 data-[state=checked]:bg-green-500 ${validationErrors.consent ? 'border-red-500' : ''}`}
+                        required
                       />
                       <Label htmlFor="consent" className={`text-sm text-white/90 leading-relaxed ${validationErrors.consent ? 'text-red-400' : ''}`}>
                         J'accepte de recevoir des informations d'orientation et des conseils par téléphone pour m'aider
@@ -448,12 +453,11 @@ export default function Contact() {
                       </Label>
                     </div>
                     {validationErrors.consent && (
-                      <p className="text-red-400 text-sm text-center mt-1">
+                      <p className="text-red-400 text-sm text-center">
                         Veuillez accepter les conditions pour continuer.
                       </p>
                     )}
                   </div>
-
 
                   <Button
                     type="submit"

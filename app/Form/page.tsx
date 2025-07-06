@@ -5,24 +5,31 @@ import type React from "react"
 import { motion } from "framer-motion"
 import { useInView } from "framer-motion"
 import { useRef, useState } from "react"
+// Import useRouter from next/navigation (for App Router)
+import { useRouter } from 'next/navigation'; // Use 'next/router' if using Pages Router
+
 import { Button } from "../components/ui/button"
 import { Input } from "../components/ui/input"
 import { Label } from "../components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select"
 import { Checkbox } from "../components/ui/checkbox"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card"
-import { Badge } from "../components/ui/badge" // Badge is imported but not used in the form itself
-import { MapPin, Phone, Mail, Send, ArrowLeft, CheckCircle } from "lucide-react" // Add CheckCircle
-import Link from "next/link" // Link is imported but not used in the form itself
+import { MapPin, Phone, Mail, Send, ArrowLeft, CheckCircle } from "lucide-react"
+
+// Import the updated API helper function
+import { sendContactForm } from "../lib/api" // Adjust the path if necessary
+
+// Import Link component
+import Link from "next/link";
 
 interface FormData {
   fullName: string
   phone: string
-  email: string // Now required for validation
-  dob: string // Now required for validation
-  studyLevel: string // Required
-  trainingSought: string // Required
-  consent: boolean // Required
+  email: string
+  dob: string
+  studyLevel: string
+  trainingSought: string
+  consent: boolean
 }
 
 const contactInfo = [
@@ -47,12 +54,16 @@ const contactInfo = [
 type ValidationErrors = {
   fullName?: boolean;
   phone?: boolean;
-  email?: boolean; // Added email to validation errors
-  dob?: boolean; // Added dob to validation errors
+  email?: boolean;
+  dob?: boolean;
   studyLevel?: boolean;
   trainingSought?: boolean;
   consent?: boolean;
 };
+
+// Subject for the email sent via Resend API
+const EMAIL_SUBJECT = "Nouvelle pré-inscription en ligne - APPA";
+
 
 export default function FormPage() {
   const ref = useRef(null)
@@ -70,6 +81,9 @@ export default function FormPage() {
   const [isSubmitted, setIsSubmitted] = useState(false)
   // State to track validation errors for specific fields
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
+
+  // Get router instance for navigation
+  const router = useRouter(); // Use useRouter hook
 
   const handleInputChange = (name: keyof FormData, value: string | boolean) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -93,8 +107,8 @@ export default function FormPage() {
      if (!formData.email.trim()) {
         errors.email = true;
      } else if (!/\S+@\S+\.\S+/.test(formData.email.trim())) {
-        // Basic email format validation (optional but recommended)
-        errors.email = true; // Could add a different error type if needed
+        // Basic email format validation
+        errors.email = true;
      }
 
      // Check required date input
@@ -146,48 +160,48 @@ export default function FormPage() {
     setIsSubmitting(true);
 
     try {
-      const formElement = e.target as HTMLFormElement;
-      const formDataObj = new FormData(formElement);
+      // Prepare data for the new API endpoint
+      // The API expects { name, email, subject, message }
+      // We map our form fields to this structure
+      const apiPayload = {
+        name: formData.fullName,
+        email: formData.email,
+        subject: EMAIL_SUBJECT, // Using a static subject
+        message: `
+          Détails de la pré-inscription:
 
-       // Add hidden inputs if not already present or to ensure correct name mapping
-       // These are important for Select values if the Select component doesn't handle it.
-       // The checkbox's 'name="Consentement"' should handle it, but can be set explicitly too.
-       // We rely on the names already added in the JSX for the hidden inputs and checkbox.
+          Nom complet: ${formData.fullName}
+          Téléphone: ${formData.phone}
+          Email: ${formData.email}
+          Date de naissance: ${formData.dob || 'Non spécifié'}
+          Niveau d'étude: ${formData.studyLevel || 'Non spécifié'}
+          Formation souhaitée: ${formData.trainingSought || 'Non spécifié'}
+          Consentement: ${formData.consent ? 'Oui' : 'Non'}
+        `, // Combine form data into the message body
+      };
 
-      const response = await fetch('https://formsubmit.co/ayoubouaziz5@gmail.com', {
-        method: 'POST',
-        body: formDataObj
+
+      // Call the API helper function to send the data
+      await sendContactForm(apiPayload);
+
+      // If sendContactForm resolves, it means the API call was successful
+      setIsSubmitted(true); // Show success message
+
+
+      setFormData({
+        fullName: "",
+        phone: "",
+        email: "",
+        dob: "",
+        studyLevel: "",
+        trainingSought: "",
+        consent: false,
       });
 
-      if (response.ok) {
-        setIsSubmitted(true); // Show success message
-        // Reset form state
-        setFormData({
-          fullName: "",
-          phone: "",
-          email: "",
-          dob: "",
-          studyLevel: "",
-          trainingSought: "",
-          consent: false,
-        });
-      } else {
-        let errorMessage = 'Erreur lors de l\'envoi du formulaire. Veuillez réessayer.';
-         try {
-             const errorData = await response.json();
-             if (errorData && errorData.message) {
-                 // Check for specific FormSubmit errors if needed, e.g.,honeypot
-                 errorMessage = `Erreur de soumission: ${errorData.message}`;
-             }
-         } catch (jsonError) {
-             console.error('Could not parse error response from FormSubmit:', jsonError);
-         }
-         console.error('Form submission failed', response.status, response.statusText);
-         alert(errorMessage); // Show error message to user
-      }
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      alert('Une erreur inattendue s\'est produite. Veuillez vérifier votre connexion et réessayer.');
+    } catch (error: any) { // Use 'any' or a more specific error type if you have one
+      console.error('Error submitting form via API:', error);
+      // sendContactForm now throws an Error with a message from the API
+      alert(`Échec de l'envoi du formulaire: ${error.message || 'Une erreur inconnue est survenue.'}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -211,18 +225,32 @@ export default function FormPage() {
                 <p className="text-white/80 mb-6">
                   Votre candidature a été envoyée avec succès. Nous vous contacterons bientôt.
                 </p>
-                {/* Optional: Button to submit another or go home */}
-                 <Button
-                  onClick={() => setIsSubmitted(false)}
-                  className="bg-white/20 hover:bg-white/30 text-white border border-white/30"
-                >
-                  Envoyer une autre candidature
-                </Button>
-                 <Link href="/" className="block mt-4">
-                    <Button variant="outline" className="bg-transparent hover:bg-white/20 text-white border-white/30">
-                       <ArrowLeft className="w-4 h-4 mr-2"/> Retour à l'accueil
+                {/* Container for buttons with spacing */}
+                <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-6"> {/* Added gap and mt-6 */}
+                     {/* Button to submit another */}
+                     <Button
+                      onClick={() => setIsSubmitted(false)}
+                      className="bg-white/20 hover:bg-white/30 text-white border border-white/30"
+                    >
+                      Envoyer une autre candidature
                     </Button>
-                 </Link>
+                    {/* --- MODIFIED LINK TO USE Link COMPONENT AND onClick --- */}
+                    {/* Wrap the Button with Link */}
+                    <Link href="/" > {/* Use passHref and legacyBehavior if wrapping a custom component */}
+                      {/* Add onClick to the Button to reset state AND navigate */}
+                      <Button
+                         variant="outline"
+                         className="bg-transparent hover:bg-white/20 text-white border-white/30"
+                         onClick={() => {
+
+                             router.push('/'); // Navigate using router
+                         }}
+                      >
+                         <ArrowLeft className="w-4 h-4 mr-2"/> Retour à l'accueil
+                      </Button>
+                    </Link>
+                    {/* --- END MODIFIED LINK --- */}
+                </div>
               </div>
             </motion.div>
           </div>
@@ -332,10 +360,7 @@ export default function FormPage() {
                 </CardHeader>
                 <CardContent className="p-8">
                   <form onSubmit={handleSubmit} className="space-y-6">
-                     {/* Hidden FormSubmit fields */}
-                    <input type="hidden" name="_subject" value="Nouvelle pré-inscription - APPA (FormPage)" />
-                    <input type="hidden" name="_captcha" value="false" />
-                    <input type="hidden" name="_template" value="table" />
+                    {/* Removed FormSubmit hidden fields */}
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-2">
@@ -344,7 +369,6 @@ export default function FormPage() {
                         </Label>
                         <Input
                           id="fullName"
-                          name="Nom complet"
                           type="text"
                           value={formData.fullName}
                           onChange={(e) => handleInputChange("fullName", e.target.value)}
@@ -362,7 +386,6 @@ export default function FormPage() {
                         </Label>
                         <Input
                           id="phone"
-                           name="Téléphone"
                           type="tel"
                           value={formData.phone}
                           onChange={(e) => handleInputChange("phone", e.target.value)}
@@ -379,17 +402,16 @@ export default function FormPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <Label htmlFor="email" className="text-gray-700 font-semibold">
-                          Email <span className="text-red-500">*</span> {/* Mark as required */}
+                          Email <span className="text-red-500">*</span>
                         </Label>
                         <Input
                           id="email"
-                           name="Email"
                           type="email"
                           value={formData.email}
                           onChange={(e) => handleInputChange("email", e.target.value)}
                           placeholder="votre@email.com"
                           className={`border-2 border-gray-200 focus:border-blue-500 rounded-xl py-3 ${validationErrors.email ? 'border-red-500' : ''}`}
-                          required // Mark as required for browser validation too
+                          required
                         />
                         {validationErrors.email && (
                           <p className="text-red-500 text-sm mt-1">L'adresse email est requise et doit être valide.</p>
@@ -397,16 +419,15 @@ export default function FormPage() {
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="dob" className="text-gray-700 font-semibold">
-                          Date de naissance <span className="text-red-500">*</span> {/* Mark as required */}
+                          Date de naissance <span className="text-red-500">*</span>
                         </Label>
                         <Input
                           id="dob"
-                           name="Date de naissance"
                           type="date"
                           value={formData.dob}
                           onChange={(e) => handleInputChange("dob", e.target.value)}
                           className={`border-2 border-gray-200 focus:border-blue-500 rounded-xl py-3 ${validationErrors.dob ? 'border-red-500' : ''}`}
-                          required // Mark as required for browser validation too
+                          required
                         />
                          {validationErrors.dob && (
                           <p className="text-red-500 text-sm mt-1">La date de naissance est requise.</p>
@@ -422,7 +443,6 @@ export default function FormPage() {
                         <Select
                           value={formData.studyLevel}
                           onValueChange={(value) => handleInputChange("studyLevel", value)}
-                          // Removed 'required' prop from SelectTrigger, validation is handled below
                         >
                           <SelectTrigger id="studyLevel" className={`border-2 border-gray-200 focus:border-blue-500 rounded-xl py-3 ${validationErrors.studyLevel ? 'border-red-500' : ''}`}>
                             <SelectValue placeholder="Sélectionner votre niveau" />
@@ -439,8 +459,6 @@ export default function FormPage() {
                             </SelectItem>
                           </SelectContent>
                         </Select>
-                        {/* Hidden input to ensure FormSubmit gets the value */}
-                        <input type="hidden" name="Niveau d'étude" value={formData.studyLevel} />
                          {validationErrors.studyLevel && (
                           <p className="text-red-500 text-sm mt-1">Votre niveau d'étude est requis.</p>
                         )}
@@ -452,7 +470,6 @@ export default function FormPage() {
                         <Select
                           value={formData.trainingSought}
                           onValueChange={(value) => handleInputChange("trainingSought", value)}
-                           // Removed 'required' prop from SelectTrigger, validation is handled below
                         >
                           <SelectTrigger id="trainingSought" className={`border-2 border-gray-200 focus:border-blue-500 rounded-xl py-3 ${validationErrors.trainingSought ? 'border-red-500' : ''}`}>
                             <SelectValue placeholder="Choisir une formation" />
@@ -469,24 +486,20 @@ export default function FormPage() {
                             </SelectItem>
                           </SelectContent>
                         </Select>
-                         {/* Hidden input to ensure FormSubmit gets the value */}
-                        <input type="hidden" name="Formation souhaitée" value={formData.trainingSought} />
                          {validationErrors.trainingSought && (
                           <p className="text-red-500 text-sm mt-1">Veuillez choisir une formation.</p>
                         )}
                       </div>
                     </div>
 
-                    {/* Consent Checkbox */}
                     <div className="space-y-2">
                       <div className="flex items-start space-x-3 p-4 bg-gray-50 rounded-xl border border-gray-200">
                         <Checkbox
                           id="consent"
-                          name="Consentement" // Make sure the name is correct for FormSubmit
                           checked={formData.consent}
                           onCheckedChange={(checked) => handleInputChange("consent", checked as boolean)}
                           className={`border-gray-400 data-[state=checked]:bg-blue-500 ${validationErrors.consent ? 'border-red-500' : ''}`}
-                          required // Keep required attribute for browser validation too
+                          required
                         />
                         <Label htmlFor="consent" className={`text-sm text-gray-700 leading-relaxed ${validationErrors.consent ? 'text-red-500' : ''}`}>
                           J'accepte de recevoir des informations d'orientation et des conseils par téléphone pour m'aider
