@@ -53,7 +53,7 @@ export default function Footer() {
                 className="h-12 w-auto" 
               />
             </div>
-            <p className="text-gray-600 text-sm leading-relaxed">Bienvenue à l'African Paramedical Private Academy</p>
+            <p className="text-gray-600 text-sm leading-relaxed">Bienvenue à l&apos;African Paramedical Private Academy</p>
           </motion.div>
 
           {/* Social Media */}

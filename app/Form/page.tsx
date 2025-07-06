@@ -6,7 +6,7 @@ import { motion } from "framer-motion"
 import { useInView } from "framer-motion"
 import { useRef, useState } from "react"
 // Import useRouter from next/navigation (for App Router)
-import { useRouter } from 'next/navigation'; // Use 'next/router' if using Pages Router
+import { useRouter } from &apos;next/navigation&apos;; // Use &apos;next/router&apos; if using Pages Router
 
 import { Button } from "../components/ui/button"
 import { Input } from "../components/ui/input"
@@ -143,12 +143,12 @@ export default function FormPage() {
        const firstErrorField = Object.keys(errors)[0];
        const errorElement = document.getElementById(firstErrorField);
        if (errorElement) {
-           errorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-       } else if (firstErrorField === 'consent') {
-            // Scroll to the consent checkbox if it's the first error
-            const consentElement = document.getElementById('consent');
+           errorElement.scrollIntoView({ behavior: &apos;smooth&apos;, block: &apos;center&apos; });
+       } else if (firstErrorField === &apos;consent&apos;) {
+            // Scroll to the consent checkbox if it&apos;s the first error
+            const consentElement = document.getElementById(&apos;consent&apos;);
             if (consentElement) {
-                 consentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                 consentElement.scrollIntoView({ behavior: &apos;smooth&apos;, block: &apos;center&apos; });
             }
        }
 
@@ -173,10 +173,10 @@ export default function FormPage() {
           Nom complet: ${formData.fullName}
           Téléphone: ${formData.phone}
           Email: ${formData.email}
-          Date de naissance: ${formData.dob || 'Non spécifié'}
-          Niveau d'étude: ${formData.studyLevel || 'Non spécifié'}
-          Formation souhaitée: ${formData.trainingSought || 'Non spécifié'}
-          Consentement: ${formData.consent ? 'Oui' : 'Non'}
+          Date de naissance: ${formData.dob || &apos;Non spécifié&apos;}
+          Niveau d&apos;étude: ${formData.studyLevel || &apos;Non spécifié&apos;}
+          Formation souhaitée: ${formData.trainingSought || &apos;Non spécifié&apos;}
+          Consentement: ${formData.consent ? &apos;Oui&apos; : &apos;Non&apos;}
         `, // Combine form data into the message body
       };
 
@@ -198,10 +198,10 @@ export default function FormPage() {
         consent: false,
       });
 
-    } catch (error: any) { // Use 'any' or a more specific error type if you have one
-      console.error('Error submitting form via API:', error);
+    } catch (error: any) { // Use &apos;any&apos; or a more specific error type if you have one
+      console.error(&apos;Error submitting form via API:&apos;, error);
       // sendContactForm now throws an Error with a message from the API
-      alert(`Échec de l'envoi du formulaire: ${error.message || 'Une erreur inconnue est survenue.'}`);
+      alert(`Échec de l&apos;envoi du formulaire: ${error.message || &apos;Une erreur inconnue est survenue.&apos;}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -243,10 +243,10 @@ export default function FormPage() {
                          className="bg-transparent hover:bg-white/20 text-white border-white/30"
                          onClick={() => {
 
-                             router.push('/'); // Navigate using router
+                             router.push(&apos;/&apos;); // Navigate using router
                          }}
                       >
-                         <ArrowLeft className="w-4 h-4 mr-2"/> Retour à l'accueil
+                         <ArrowLeft className="w-4 h-4 mr-2"/> Retour à l&apos;accueil
                       </Button>
                     </Link>
                     {/* --- END MODIFIED LINK --- */}
@@ -373,7 +373,7 @@ export default function FormPage() {
                           value={formData.fullName}
                           onChange={(e) => handleInputChange("fullName", e.target.value)}
                           placeholder="Votre nom complet"
-                           className={`border-2 border-gray-200 focus:border-blue-500 rounded-xl py-3 ${validationErrors.fullName ? 'border-red-500' : ''}`}
+                           className={`border-2 border-gray-200 focus:border-blue-500 rounded-xl py-3 ${validationErrors.fullName ? &apos;border-red-500&apos; : &apos;&apos;}`}
                           required
                         />
                         {validationErrors.fullName && (
@@ -390,7 +390,7 @@ export default function FormPage() {
                           value={formData.phone}
                           onChange={(e) => handleInputChange("phone", e.target.value)}
                           placeholder="06 XX XX XX XX"
-                          className={`border-2 border-gray-200 focus:border-blue-500 rounded-xl py-3 ${validationErrors.phone ? 'border-red-500' : ''}`}
+                          className={`border-2 border-gray-200 focus:border-blue-500 rounded-xl py-3 ${validationErrors.phone ? &apos;border-red-500&apos; : &apos;&apos;}`}
                           required
                         />
                          {validationErrors.phone && (
@@ -410,11 +410,11 @@ export default function FormPage() {
                           value={formData.email}
                           onChange={(e) => handleInputChange("email", e.target.value)}
                           placeholder="votre@email.com"
-                          className={`border-2 border-gray-200 focus:border-blue-500 rounded-xl py-3 ${validationErrors.email ? 'border-red-500' : ''}`}
+                          className={`border-2 border-gray-200 focus:border-blue-500 rounded-xl py-3 ${validationErrors.email ? &apos;border-red-500&apos; : &apos;&apos;}`}
                           required
                         />
                         {validationErrors.email && (
-                          <p className="text-red-500 text-sm mt-1">L'adresse email est requise et doit être valide.</p>
+                          <p className="text-red-500 text-sm mt-1">L&apos;adresse email est requise et doit être valide.</p>
                         )}
                       </div>
                       <div className="space-y-2">
@@ -426,7 +426,7 @@ export default function FormPage() {
                           type="date"
                           value={formData.dob}
                           onChange={(e) => handleInputChange("dob", e.target.value)}
-                          className={`border-2 border-gray-200 focus:border-blue-500 rounded-xl py-3 ${validationErrors.dob ? 'border-red-500' : ''}`}
+                          className={`border-2 border-gray-200 focus:border-blue-500 rounded-xl py-3 ${validationErrors.dob ? &apos;border-red-500&apos; : &apos;&apos;}`}
                           required
                         />
                          {validationErrors.dob && (
@@ -438,13 +438,13 @@ export default function FormPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <Label className="text-gray-700 font-semibold">
-                          Niveau d'étude <span className="text-red-500">*</span>
+                          Niveau d&apos;étude <span className="text-red-500">*</span>
                         </Label>
                         <Select
                           value={formData.studyLevel}
                           onValueChange={(value) => handleInputChange("studyLevel", value)}
                         >
-                          <SelectTrigger id="studyLevel" className={`border-2 border-gray-200 focus:border-blue-500 rounded-xl py-3 ${validationErrors.studyLevel ? 'border-red-500' : ''}`}>
+                          <SelectTrigger id="studyLevel" className={`border-2 border-gray-200 focus:border-blue-500 rounded-xl py-3 ${validationErrors.studyLevel ? &apos;border-red-500&apos; : &apos;&apos;}`}>
                             <SelectValue placeholder="Sélectionner votre niveau" />
                           </SelectTrigger>
                           <SelectContent className="bg-white border-gray-200">
@@ -460,7 +460,7 @@ export default function FormPage() {
                           </SelectContent>
                         </Select>
                          {validationErrors.studyLevel && (
-                          <p className="text-red-500 text-sm mt-1">Votre niveau d'étude est requis.</p>
+                          <p className="text-red-500 text-sm mt-1">Votre niveau d&apos;étude est requis.</p>
                         )}
                       </div>
                       <div className="space-y-2">
@@ -471,7 +471,7 @@ export default function FormPage() {
                           value={formData.trainingSought}
                           onValueChange={(value) => handleInputChange("trainingSought", value)}
                         >
-                          <SelectTrigger id="trainingSought" className={`border-2 border-gray-200 focus:border-blue-500 rounded-xl py-3 ${validationErrors.trainingSought ? 'border-red-500' : ''}`}>
+                          <SelectTrigger id="trainingSought" className={`border-2 border-gray-200 focus:border-blue-500 rounded-xl py-3 ${validationErrors.trainingSought ? &apos;border-red-500&apos; : &apos;&apos;}`}>
                             <SelectValue placeholder="Choisir une formation" />
                           </SelectTrigger>
                           <SelectContent className="bg-white border-gray-200">
@@ -498,11 +498,11 @@ export default function FormPage() {
                           id="consent"
                           checked={formData.consent}
                           onCheckedChange={(checked) => handleInputChange("consent", checked as boolean)}
-                          className={`border-gray-400 data-[state=checked]:bg-blue-500 ${validationErrors.consent ? 'border-red-500' : ''}`}
+                          className={`border-gray-400 data-[state=checked]:bg-blue-500 ${validationErrors.consent ? &apos;border-red-500&apos; : &apos;&apos;}`}
                           required
                         />
-                        <Label htmlFor="consent" className={`text-sm text-gray-700 leading-relaxed ${validationErrors.consent ? 'text-red-500' : ''}`}>
-                          J'accepte de recevoir des informations d'orientation et des conseils par téléphone pour m'aider
+                        <Label htmlFor="consent" className={`text-sm text-gray-700 leading-relaxed ${validationErrors.consent ? &apos;text-red-500&apos; : &apos;&apos;}`}>
+                          J&apos;accepte de recevoir des informations d&apos;orientation et des conseils par téléphone pour m&apos;aider
                           dans mon parcours professionnel. <span className="text-red-500">*</span>
                         </Label>
                       </div>

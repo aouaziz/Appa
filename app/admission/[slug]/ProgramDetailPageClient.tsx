@@ -75,7 +75,7 @@ export default function ProgramDetailPageClient({ slug }: { slug: string }) {
               >
                 <Card className="shadow-lg border-0 overflow-hidden">
                   <CardHeader className="bg-gradient-to-r from-green-50 to-teal-50">
-                    <CardTitle className="text-2xl font-bold text-gray-900">Conditions d'Admission</CardTitle>
+                    <CardTitle className="text-2xl font-bold text-gray-900">Conditions d&apos;Admission</CardTitle>
                   </CardHeader>
                   <CardContent className="p-8">
                     <div className="grid md:grid-cols-3 gap-6">
@@ -87,7 +87,7 @@ export default function ProgramDetailPageClient({ slug }: { slug: string }) {
                         <div className="w-16 h-16 bg-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
                           <BookOpen className="h-8 w-8 text-white" />
                         </div>
-                        <h3 className="font-bold text-gray-900 mb-3">Niveau d'accès</h3>
+                        <h3 className="font-bold text-gray-900 mb-3">Niveau d&apos;accès</h3>
                         <ul className="text-sm text-gray-600 space-y-2">
                           {program.accessLevel.map((level, index) => (
                             <li key={index} className="leading-relaxed">
@@ -178,7 +178,7 @@ export default function ProgramDetailPageClient({ slug }: { slug: string }) {
           >
             <Card className="bg-gradient-to-r from-teal-600 to-green-600 border-0 shadow-2xl overflow-hidden">
               <CardContent className="p-12 text-center relative">
-                <div className="absolute inset-0 bg-[url('/placeholder.svg?height=100&width=100')] bg-repeat opacity-5"></div>
+                <div className="absolute inset-0 bg-[url(&apos;/placeholder.svg?height=100&width=100&apos;)] bg-repeat opacity-5"></div>
                 <div className="relative z-10">
                   <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4">Prêt à démarrer votre carrière?</h2>
                   <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto leading-relaxed">
@@ -189,7 +189,7 @@ export default function ProgramDetailPageClient({ slug }: { slug: string }) {
                     className="bg-white text-teal-600 hover:bg-gray-50 font-semibold py-4 px-8 rounded-xl text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
                   >
                     <Send className="h-5 w-5 mr-2" />
-                    Commencer l'inscription
+                    Commencer l&apos;inscription
                   </Button>
                 </div>
               </CardContent>

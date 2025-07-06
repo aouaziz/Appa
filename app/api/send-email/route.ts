@@ -1,6 +1,6 @@
 // app/api/send-email/route.ts
-import { NextResponse } from 'next/server';
-import { Resend } from 'resend';
+import { NextResponse } from &apos;next/server&apos;;
+import { Resend } from &apos;resend&apos;;
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const recipientEmail = process.env.CONTACT_EMAIL_RECIPIENT; // Get recipient from env
@@ -8,7 +8,7 @@ const recipientEmail = process.env.CONTACT_EMAIL_RECIPIENT; // Get recipient fro
 // Define the expected payload structure from the frontend
 interface FrontendPayload {
   name: string;
-  email: string; // Sender's email, used for reply-to
+  email: string; // Sender&apos;s email, used for reply-to
   subject: string; // Subject for the email
   message: string; // Combined message body
 }
@@ -17,7 +17,7 @@ export async function POST(request: Request) {
   // Ensure the recipient email is configured
   if (!recipientEmail) {
     console.error("CONTACT_EMAIL_RECIPIENT environment variable is not set.");
-    return NextResponse.json({ message: 'Server configuration error.' }, { status: 500 });
+    return NextResponse.json({ message: &apos;Server configuration error.&apos; }, { status: 500 });
   }
 
   let data: FrontendPayload;
@@ -37,7 +37,7 @@ export async function POST(request: Request) {
 
     // Send email using Resend
     const { data: resendData, error } = await resend.emails.send({
-      from: 'Votre Site Web <onboarding@resend.dev>', // Replace with your verified domain email if in production
+      from: &apos;Votre Site Web <onboarding@resend.dev>&apos;, // Replace with your verified domain email if in production
       to: [recipientEmail], // Use the configured recipient email
       subject: subject,
       text: `
@@ -50,19 +50,19 @@ export async function POST(request: Request) {
         Détails:
         ${message}
       `,
-      replyTo: email, // Set reply-to to the sender's email
+      replyTo: email, // Set reply-to to the sender&apos;s email
     });
 
     if (error) {
-      console.error('Error sending email via Resend:', error);
+      console.error(&apos;Error sending email via Resend:&apos;, error);
       return NextResponse.json({ message: error.message }, { status: 500 });
     }
 
-    console.log('Email sent successfully via Resend:', resendData);
+    console.log(&apos;Email sent successfully via Resend:&apos;, resendData);
     return NextResponse.json({ success: true }, { status: 200 });
 
   } catch (error: any) {
-    console.error('Unexpected error in API route:', error);
-    return NextResponse.json({ message: error.message || 'An unexpected error occurred.' }, { status: 500 });
+    console.error(&apos;Unexpected error in API route:&apos;, error);
+    return NextResponse.json({ message: error.message || &apos;An unexpected error occurred.&apos; }, { status: 500 });
   }
 }

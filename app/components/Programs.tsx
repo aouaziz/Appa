@@ -19,14 +19,14 @@ const programs = [
       "Formation complète pour devenir infirmier polyvalent avec toutes les compétences nécessaires pour exercer dans tous les services hospitaliers",
     duration: "3 ans",
     level: "Baccalauréat",
-    students: "Capacité d'accueil limitée",
+    students: "Capacité d&apos;accueil limitée",
     image: "/program-nurse-1.webp",
   },
   {
     id: 2,
     title: "Infirmier(e) Auxiliaire",
     description:
-      "Programme spécialisé pour l'assistance infirmière avec focus sur les soins de base et l'accompagnement médical",
+      "Programme spécialisé pour l&apos;assistance infirmière avec focus sur les soins de base et l&apos;accompagnement médical",
     duration: "2 ans",
     level: "Niveau Bac",
     students: "Formation intensive",
@@ -35,7 +35,7 @@ const programs = [
   {
     id: 3,
     title: "Aide Soignant",
-    description: "Formation d'aide soignant pour soutenir l'équipe médicale dans les soins quotidiens aux patients",
+    description: "Formation d&apos;aide soignant pour soutenir l&apos;équipe médicale dans les soins quotidiens aux patients",
     duration: "18 mois",
     level: "3ème Année collège",
     students: "Formation accélérée",

@@ -18,7 +18,7 @@ const Drawerdata = ({ setIsOpen, isHomePage }: DrawerdataProps) => {
 
     if (href.startsWith("/#")) {
       if (isHomePage) {
-        // If we're on home page, scroll to section
+        // If we&apos;re on home page, scroll to section
         const sectionId = href.substring(2);
         setTimeout(() => {
           const element = document.getElementById(sectionId);
@@ -27,7 +27,7 @@ const Drawerdata = ({ setIsOpen, isHomePage }: DrawerdataProps) => {
           }
         }, 300); // Wait for drawer to close
       } else {
-        // If we're on another page, navigate to home page with hash
+        // If we&apos;re on another page, navigate to home page with hash
         setTimeout(() => {
           window.location.href = href;
         }, 300);
@@ -35,7 +35,7 @@ const Drawerdata = ({ setIsOpen, isHomePage }: DrawerdataProps) => {
     } else if (href === "/") {
       // Navigate to home page
       setTimeout(() => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({ top: 0, behavior: &apos;smooth&apos; });
       }, 300);
     } else {
       // Navigate to other pages

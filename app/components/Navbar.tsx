@@ -1,9 +1,9 @@
-'use client'
-import React, { useState, useEffect, useRef } from 'react';
-import { Menu, ChevronDown } from 'lucide-react';
-import Drawer from './Drawer';
-import Drawerdata from './Drawerdata';
-import Image from 'next/image';
+&apos;use client&apos;
+import React, { useState, useEffect, useRef } from &apos;react&apos;;
+import { Menu, ChevronDown } from &apos;lucide-react&apos;;
+import Drawer from &apos;./Drawer&apos;;
+import Drawerdata from &apos;./Drawerdata&apos;;
+import Image from &apos;next/image&apos;;
 
 interface NavigationItem {
   name: string;
@@ -46,14 +46,14 @@ const CustomLink = ({
 
     if (href.startsWith("/#")) {
       if (isHomePage) {
-        // If we're on home page, scroll to section
+        // If we&apos;re on home page, scroll to section
         const sectionId = href.substring(2);
         const element = document.getElementById(sectionId);
         if (element) {
           element.scrollIntoView({ behavior: "smooth" });
         }
       } else {
-        // If we're on another page, navigate to home page with hash
+        // If we&apos;re on another page, navigate to home page with hash
         window.location.href = href;
       }
     } else if (href === "/") {
@@ -75,7 +75,7 @@ const Navbar = () => {
   const [hasScrolled, setHasScrolled] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const isHomePage = true; // Since we're in a single page app
+  const isHomePage = true; // Since we&apos;re in a single page app
 
   useEffect(() => {
     const handleScroll = () => {
@@ -96,9 +96,9 @@ const Navbar = () => {
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener(&apos;mousedown&apos;, handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener(&apos;mousedown&apos;, handleClickOutside);
     };
   }, []);
 
@@ -131,7 +131,7 @@ const Navbar = () => {
   };
 
   const handleLogoClick = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: &apos;smooth&apos; });
   };
 
   const handleDropdownItemClick = (href: string) => {
