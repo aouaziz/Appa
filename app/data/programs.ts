@@ -26,13 +26,11 @@ export const programsData: Program[] = [
     description: "L'Infirmier Polyvalent est la personne qui donne des soins infirmiers sur prescription ou conseil médical, ou en application du rôle propre qui lui est dévolu. L'infirmière ou l'infirmier participe à différentes actions en matière de prévention, d'éducation de la santé et de formation ou d'encadrement.",
     accessLevel: [
       "baccalauréat (toutes branches)",
-      "Ou être titulaire d'un diplôme de Technicien Infirmier auxiliaire"
     ],
     diplomaType: "Technicien Spécialisé Infirmier Polyvalent.",
     trainingDuration: "3 ans de formation, et 1800 heures de stages.",
     professionalOutlets: [
-      "les hôpitaux publics et privés",
-      "les cliniques privées",
+      "la médecine de travail",
       "les centres de santé",
       "les établissements de soins",
       "les centres de réadaptation",
@@ -54,7 +52,7 @@ export const programsData: Program[] = [
       "Soins à domicile",
       "Maisons de retraite",
       "Centres pour personnes handicapées",
-      "Cliniques et hôpitaux",
+      "cliniques et centres hospitaliers",
     ],
     cardCondition: "Niveau Bac",
     cardDuration: "2 ans de formation",
@@ -68,7 +66,7 @@ export const programsData: Program[] = [
     description: "L'aide-soignant(e) collabore aux soins infirmiers pour maintenir et restaurer la santé des patients. Il/elle joue un rôle crucial dans l'accompagnement quotidien des personnes malades ou dépendantes.",
     accessLevel: ["3ème Année collège complétée"],
     diplomaType: "Aide-Soignant qualifié.",
-    trainingDuration: "1 an de formation, et 600 heures de stages.",
+    trainingDuration: "1 an de formation, et 1000 heures de stages.",
     professionalOutlets: [
         "Centres hospitaliers",
         "Établissements d'hébergement pour personnes âgées dépendantes (EHPAD)",

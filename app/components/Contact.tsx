@@ -14,8 +14,6 @@ import { MapPin, Phone, Mail, Send, Facebook, Instagram, Youtube, CheckCircle } 
 
 import { sendContactForm } from "../lib/api"
 
-
-
 const contactInfo = [
   {
     icon: MapPin,
@@ -187,8 +185,6 @@ export default function Contact() {
     }
   }
 
-
-
   if (isSubmitted) {
     return (
       <section
@@ -233,64 +229,13 @@ export default function Contact() {
           <div className="w-24 h-1 bg-gradient-to-r from-green-400 to-teal-300 mx-auto rounded-full"></div>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-12">
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="space-y-8"
-          >
-            <div>
-              <h3 className="text-2xl font-bold text-white mb-6">Contactez-nous</h3>
-              <div className="space-y-6">
-                {contactInfo.map((info, index) => (
-                  <motion.div
-                    key={info.title}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={isInView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
-                    className="flex items-start space-x-4 p-4 rounded-xl bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-colors duration-300"
-                  >
-                    <div className="flex-shrink-0 w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center">
-                      <info.icon className="h-6 w-6 text-white" />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-white mb-1">{info.title}</h4>
-                      <p className="text-white/80 text-sm">{info.content}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.8 }}
-            >
-              <h4 className="text-lg font-semibold text-white mb-4">Suivez-nous</h4>
-              <div className="flex space-x-4">
-                {socialLinks.map((social) => (
-                  <motion.a
-                    key={social.name}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
-                    className={`w-12 h-12 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center text-white/80 ${social.color} transition-colors duration-300`}
-                  >
-                    <social.icon className="h-6 w-6" />
-                  </motion.a>
-                ))}
-              </div>
-            </motion.div>
-          </motion.div>
-
+        <div className="flex flex-col lg:grid lg:grid-cols-2 gap-12">
+          {/* Form section - now first on mobile */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.4 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="lg:order-2"
           >
             <Card className="bg-white/10 backdrop-blur-sm border-white/20">
               <CardHeader>
@@ -471,6 +416,60 @@ export default function Contact() {
                 </form>
               </CardContent>
             </Card>
+          </motion.div>
+
+          {/* Contact info section - now second on mobile */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="lg:order-1 space-y-8"
+          >
+            <div>
+              <h3 className="text-2xl font-bold text-white mb-6">Contactez-nous</h3>
+              <div className="space-y-6">
+                {contactInfo.map((info, index) => (
+                  <motion.div
+                    key={info.title}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={isInView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.6, delay: 0.6 + index * 0.1 }}
+                    className="flex items-start space-x-4 p-4 rounded-xl bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-colors duration-300"
+                  >
+                    <div className="flex-shrink-0 w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center">
+                      <info.icon className="h-6 w-6 text-white" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-white mb-1">{info.title}</h4>
+                      <p className="text-white/80 text-sm">{info.content}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 1.0 }}
+            >
+              <h4 className="text-lg font-semibold text-white mb-4">Suivez-nous</h4>
+              <div className="flex space-x-4">
+                {socialLinks.map((social) => (
+                  <motion.a
+                    key={social.name}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                    className={`w-12 h-12 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center text-white/80 ${social.color} transition-colors duration-300`}
+                  >
+                    <social.icon className="h-6 w-6" />
+                  </motion.a>
+                ))}
+              </div>
+            </motion.div>
           </motion.div>
         </div>
       </div>

@@ -156,7 +156,7 @@ export default function FormPage() {
     }
     // --- End Validation Step ---
 
-    setValidationErrors({}); // Clear MyType previous validation errors
+    setValidationErrors({}); // Clear previous validation errors
     setIsSubmitting(true);
 
     try {
@@ -198,7 +198,7 @@ export default function FormPage() {
         consent: false,
       });
 
-    } catch (error: unknown) { // Use 'MyType' or a more specific error type if you have one
+    } catch (error: unknown) { // Use 'unknown' or a more specific error type if you have one
       console.error('Error submitting form via API:', error);
       // sendContactForm now throws an Error with a message from the API
       const errorMessage =
@@ -292,68 +292,11 @@ export default function FormPage() {
       <section className="py-24" ref={ref}>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12">
-            {/* Contact Information */}
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              animate={isInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.8 }}
-              className="space-y-8"
-            >
-              <Card className="shadow-xl border-0 overflow-hidden">
-                <CardHeader className="bg-gradient-to-r from-blue-50 to-teal-50 text-center">
-                  <CardTitle className="text-2xl font-bold text-gray-900">Contactez-nous</CardTitle>
-                  <CardDescription className="text-gray-600">
-                    Nous sommes là pour vous accompagner dans votre parcours
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="p-8">
-                  <div className="space-y-6">
-                    {contactInfo.map((info, index) => (
-                      <motion.div
-                        key={info.title}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={isInView ? { opacity: 1, y: 0 } : {}}
-                        transition={{ duration: 0.6, delay: 0.2 + index * 0.1 }}
-                        className="flex items-start space-x-4 p-4 rounded-xl bg-gradient-to-r from-gray-50 to-blue-50 hover:from-blue-50 hover:to-teal-50 transition-all duration-300 group"
-                      >
-                        <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-teal-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                          <info.icon className="h-6 w-6 text-white" />
-                        </div>
-                        <div>
-                          <h4 className="font-semibold text-gray-900 mb-1">{info.title}</h4>
-                          <p className="text-gray-600 text-sm leading-relaxed">{info.content}</p>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Map */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6, delay: 0.6 }}
-                className="relative rounded-2xl overflow-hidden shadow-xl"
-              >
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d831.1708324601484!2d-7.6754217008025964!3d33.5616031!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xda7d300506091eb%3A0xc7d664258114e9b7!2sBoulevard%20oued%20Oum%20Rabia!5e0!3m2!1sen!2sus!4v1751570160476!5m2!1sen!2sus"
-                  width="100%"
-                  height="300"
-                  style={{ border: 0 }}
-                  allowFullScreen={true}
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  className="w-full"
-                />
-              </motion.div>
-            </motion.div>
-
-            {/* Registration Form */}
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               animate={isInView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.2 }}
+              className="order-1 lg:order-2"
             >
               <Card className="shadow-xl border-0 overflow-hidden">
                 <CardHeader className="bg-gradient-to-r from-green-50 to-teal-50 text-center">
@@ -536,6 +479,63 @@ export default function FormPage() {
                   </form>
                 </CardContent>
               </Card>
+            </motion.div>
+
+            {/* Contact Information - Now second on mobile with order-2 lg:order-1 */}
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              animate={isInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.8 }}
+              className="order-2 lg:order-1 space-y-8"
+            >
+              <Card className="shadow-xl border-0 overflow-hidden">
+                <CardHeader className="bg-gradient-to-r from-blue-50 to-teal-50 text-center">
+                  <CardTitle className="text-2xl font-bold text-gray-900">Contactez-nous</CardTitle>
+                  <CardDescription className="text-gray-600">
+                    Nous sommes là pour vous accompagner dans votre parcours
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="p-8">
+                  <div className="space-y-6">
+                    {contactInfo.map((info, index) => (
+                      <motion.div
+                        key={info.title}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={isInView ? { opacity: 1, y: 0 } : {}}
+                        transition={{ duration: 0.6, delay: 0.2 + index * 0.1 }}
+                        className="flex items-start space-x-4 p-4 rounded-xl bg-gradient-to-r from-gray-50 to-blue-50 hover:from-blue-50 hover:to-teal-50 transition-all duration-300 group"
+                      >
+                        <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-blue-500 to-teal-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                          <info.icon className="h-6 w-6 text-white" />
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-gray-900 mb-1">{info.title}</h4>
+                          <p className="text-gray-600 text-sm leading-relaxed">{info.content}</p>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Map */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.6, delay: 0.6 }}
+                className="relative rounded-2xl overflow-hidden shadow-xl"
+              >
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d831.1708324601484!2d-7.6754217008025964!3d33.5616031!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xda7d300506091eb%3A0xc7d664258114e9b7!2sBoulevard%20oued%20Oum%20Rabia!5e0!3m2!1sen!2sus!4v1751570160476!5m2!1sen!2sus"
+                  width="100%"
+                  height="300"
+                  style={{ border: 0 }}
+                  allowFullScreen={true}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="w-full"
+                />
+              </motion.div>
             </motion.div>
           </div>
         </div>

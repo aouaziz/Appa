@@ -1,6 +1,7 @@
 'use client'
 import React, { useState, useEffect, useRef } from 'react';
 import { Menu, ChevronDown } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 import Drawer from './Drawer';
 import Drawerdata from './Drawerdata';
 import Image from 'next/image';
@@ -74,10 +75,20 @@ const Navbar = () => {
   const [currentLink, setCurrentLink] = useState("/");
   const [hasScrolled, setHasScrolled] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const isHomePage = true; // Since we're in a single page app
+  const pathname = usePathname();
+  const isHomePage = pathname === '/';
+
+  // Fix hydration issue
+  useEffect(() => {
+    setIsMounted(true);
+    setHasScrolled(window.scrollY > 10);
+  }, []);
 
   useEffect(() => {
+    if (!isMounted) return;
+
     const handleScroll = () => {
       setHasScrolled(window.scrollY > 10);
     };
@@ -86,7 +97,7 @@ const Navbar = () => {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [isMounted]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -131,18 +142,94 @@ const Navbar = () => {
   };
 
   const handleLogoClick = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (isHomePage) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      window.location.href = "/";
+    }
   };
 
   const handleDropdownItemClick = (href: string) => {
     setIsDropdownOpen(false);
     window.location.href = href;
   };
+
   const logo = "/logo.webp"; 
+
+  // Prevent hydration mismatch by not rendering scroll-dependent styles until mounted
+  if (!isMounted) {
+    return (
+      <nav className="fixed top-0 left-0 right-0 w-full z-[9999] bg-transparent" style={{ zIndex: 9999 }}>
+        <div className="mx-auto max-w-7xl px-6 py-4 lg:px-8">
+          <div className="relative flex h-12 md:h-20 items-center justify-between">
+            <div className="flex flex-1 items-center sm:items-stretch sm:justify-start">
+              {/* LOGO */}
+              <div className="flex flex-shrink-0 items-center cursor-pointer" onClick={handleLogoClick}>
+                <Image
+                  className="block h-14 w-auto lg:hidden"
+                  src={logo || "/placeholder.svg"} 
+                  alt="APPA Logo"
+                  width={120}
+                  height={56}
+                />
+                <Image
+                  className="hidden h-20 w-auto lg:block"
+                  src={logo || "/placeholder.svg"} 
+                  alt="APPA Logo"
+                  width={160}
+                  height={80}
+                />
+              </div>
+
+              {/* LINKS */}
+              <div className="hidden lg:block m-auto">
+                <div className="flex items-center space-x-4">
+                  {navigation.map((item) => (
+                    <div key={item.name} className="relative flex items-center">
+                      <CustomLink
+                        href={item.href}
+                        onClick={() => handleLinkClick(item.href)}
+                        isHomePage={isHomePage}
+                      >
+                        <span className="text-white transition-all duration-300 hover:text-teal-600">
+                          {item.name}
+                        </span>
+                      </CustomLink>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* CALL TO ACTION BUTTON */}
+            <div className="absolute inset-y-0 right-0 flex items-center sm:static sm:inset-auto sm:pr-0">
+              <div className="hidden lg:block">
+                <button
+                  type="button"
+                  className="bg-teal-500 text-white font-semibold py-3 px-6 rounded-lg hover:bg-teal-600 transition-colors duration-300 shadow-sm"
+                  onClick={scrollToContact}
+                >
+                  PRÉ-INSCRIPTION
+                </button>
+              </div>
+            </div>
+
+            {/* DRAWER ICON */}
+            <div className="block lg:hidden">
+              <Menu
+                className="block h-8 w-8 text-white transition-colors duration-300 cursor-pointer"
+                onClick={() => setIsOpen(true)}
+              />
+            </div>
+          </div>
+        </div>
+      </nav>
+    );
+  }
+
   return (
     <>
       <nav
-      
         className={classNames(
           "fixed top-0 left-0 right-0 w-full z-[9999] transition-all duration-300 ease-in-out",
           hasScrolled ? "bg-white/95 backdrop-blur-sm shadow-lg" : "bg-transparent",
@@ -156,14 +243,14 @@ const Navbar = () => {
               <div className="flex flex-shrink-0 items-center cursor-pointer" onClick={handleLogoClick}>
                 <Image
                   className="block h-14 w-auto lg:hidden"
-                  src={ logo || "/placeholder.svg"} 
+                  src={logo || "/placeholder.svg"} 
                   alt="APPA Logo"
                   width={120}
                   height={56}
                 />
                 <Image
                   className="hidden h-20 w-auto lg:block"
-                  src={ logo || "/placeholder.svg"} 
+                  src={logo || "/placeholder.svg"} 
                   alt="APPA Logo"
                   width={160}
                   height={80}

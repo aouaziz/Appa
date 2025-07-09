@@ -14,16 +14,15 @@ export default function Hero() {
   }
   const hero = "/hero-background.webp"
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden ">
       {/* Background Image */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0 ">
         <Image
           src={ hero || "/placeholder.svg"}
           alt="Medical professional"
           fill
           priority
           className="object-cover object-right"
-          sizes="100vw"
         />
         {/* Gradient overlay for better text readability */}
         <div className="absolute inset-0 bg-gradient-to-r from-blue-900/90 via-blue-800/70 to-transparent"></div>
@@ -118,27 +117,6 @@ export default function Hero() {
                 <Play className="h-7 w-7 group-hover:scale-110 transition-transform" />
                 En Savoir Plus
               </Button>
-            </motion.div>
-
-            {/* Floating Stats Cards */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 1 }}
-              className="flex flex-wrap gap-4 mt-12 justify-center lg:justify-start"
-            >
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 text-center">
-                <div className="text-2xl font-bold text-white">95%</div>
-                <div className="text-sm text-white/80">Taux de réussite</div>
-              </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 text-center">
-                <div className="text-2xl font-bold text-white">500+</div>
-                <div className="text-sm text-white/80">Diplômés</div>
-              </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 text-center">
-                <div className="text-2xl font-bold text-white">3</div>
-                <div className="text-sm text-white/80">Programmes</div>
-              </div>
             </motion.div>
           </motion.div>
 
