@@ -23,6 +23,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr">
+       <head>
+        <link rel="icon" href="/favicon.png" />
+      </head>
       <body className={`${inter.variable} antialiased`}>
       <Navbar />
       {children}

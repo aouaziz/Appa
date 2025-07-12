@@ -64,7 +64,6 @@ type ValidationErrors = {
 // Subject for the email sent via Resend API
 const EMAIL_SUBJECT = "Nouvelle pré-inscription en ligne - APPA";
 
-
 export default function FormPage() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
@@ -180,13 +179,11 @@ export default function FormPage() {
         `, // Combine form data into the message body
       };
 
-
       // Call the API helper function to send the data
       await sendContactForm(apiPayload);
 
       // If sendContactForm resolves, it means the API call was successful
       setIsSubmitted(true); // Show success message
-
 
       setFormData({
         fullName: "",
@@ -238,19 +235,15 @@ export default function FormPage() {
                     >
                       Envoyer une autre candidature
                     </Button>
-                    {/* --- MODIFIED LINK TO USE Link COMPONENT AND onClick --- */}
-                    {/* Wrap the Button with Link */}
-                    <Link href="/" > {/* Use passHref and legacyBehavior if wrapping a custom component */}
-                      {/* Add onClick to the Button to reset state AND navigate */}
+                    <Link href="/" >
                       <Button
                          variant="outline"
                          className="bg-transparent hover:bg-white/20 text-white border-white/30"
                          onClick={() => {
-
                              router.push('/'); // Navigate using router
                          }}
                       >
-                         <ArrowLeft className="w-4 h-4 mr-2"/> Retour à l&apos;accueil
+                         <ArrowLeft className="w-4 h-4 mr-2"/> Retour à l'accueil
                       </Button>
                     </Link>
                     {/* --- END MODIFIED LINK --- */}
@@ -262,7 +255,6 @@ export default function FormPage() {
       </div>
     );
   }
-
 
   // Render the form if not submitted
   return (
@@ -320,7 +312,7 @@ export default function FormPage() {
                           value={formData.fullName}
                           onChange={(e) => handleInputChange("fullName", e.target.value)}
                           placeholder="Votre nom complet"
-                           className={`border-2 border-gray-200 focus:border-blue-500 rounded-xl py-3 ${validationErrors.fullName ? 'border-red-500' : ''}`}
+                          className={`border-2 border-gray-200 focus:border-blue-500 rounded-xl py-3 ${validationErrors.fullName ? 'border-red-500' : ''}`}
                           required
                         />
                         {validationErrors.fullName && (
@@ -340,7 +332,7 @@ export default function FormPage() {
                           className={`border-2 border-gray-200 focus:border-blue-500 rounded-xl py-3 ${validationErrors.phone ? 'border-red-500' : ''}`}
                           required
                         />
-                         {validationErrors.phone && (
+                        {validationErrors.phone && (
                           <p className="text-red-500 text-sm mt-1">Le numéro de téléphone est requis.</p>
                         )}
                       </div>
@@ -361,7 +353,7 @@ export default function FormPage() {
                           required
                         />
                         {validationErrors.email && (
-                          <p className="text-red-500 text-sm mt-1">L&apos;adresse email est requise et doit être valide.</p>
+                          <p className="text-red-500 text-sm mt-1">L'adresse email est requise et doit être valide.</p>
                         )}
                       </div>
                       <div className="space-y-2">
@@ -376,7 +368,7 @@ export default function FormPage() {
                           className={`border-2 border-gray-200 focus:border-blue-500 rounded-xl py-3 ${validationErrors.dob ? 'border-red-500' : ''}`}
                           required
                         />
-                         {validationErrors.dob && (
+                        {validationErrors.dob && (
                           <p className="text-red-500 text-sm mt-1">La date de naissance est requise.</p>
                         )}
                       </div>
@@ -385,11 +377,11 @@ export default function FormPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <Label className="text-gray-700 font-semibold">
-                          Niveau d&apos;étude <span className="text-red-500">*</span>
+                          Niveau d'étude <span className="text-red-500">*</span>
                         </Label>
                         <Select
                           value={formData.studyLevel}
-                          onValueChange={(value) => handleInputChange("studyLevel", value)}
+                          onValueChange={(value: string) => handleInputChange("studyLevel", value)}
                         >
                           <SelectTrigger id="studyLevel" className={`border-2 border-gray-200 focus:border-blue-500 rounded-xl py-3 ${validationErrors.studyLevel ? 'border-red-500' : ''}`}>
                             <SelectValue placeholder="Sélectionner votre niveau" />
@@ -406,8 +398,8 @@ export default function FormPage() {
                             </SelectItem>
                           </SelectContent>
                         </Select>
-                         {validationErrors.studyLevel && (
-                          <p className="text-red-500 text-sm mt-1">Votre niveau d&apos;étude est requis.</p>
+                        {validationErrors.studyLevel && (
+                          <p className="text-red-500 text-sm mt-1">Votre niveau d'étude est requis.</p>
                         )}
                       </div>
                       <div className="space-y-2">
@@ -416,7 +408,7 @@ export default function FormPage() {
                         </Label>
                         <Select
                           value={formData.trainingSought}
-                          onValueChange={(value) => handleInputChange("trainingSought", value)}
+                          onValueChange={(value: string) => handleInputChange("trainingSought", value)}
                         >
                           <SelectTrigger id="trainingSought" className={`border-2 border-gray-200 focus:border-blue-500 rounded-xl py-3 ${validationErrors.trainingSought ? 'border-red-500' : ''}`}>
                             <SelectValue placeholder="Choisir une formation" />
@@ -433,7 +425,7 @@ export default function FormPage() {
                             </SelectItem>
                           </SelectContent>
                         </Select>
-                         {validationErrors.trainingSought && (
+                        {validationErrors.trainingSought && (
                           <p className="text-red-500 text-sm mt-1">Veuillez choisir une formation.</p>
                         )}
                       </div>
@@ -444,12 +436,12 @@ export default function FormPage() {
                         <Checkbox
                           id="consent"
                           checked={formData.consent}
-                          onCheckedChange={(checked) => handleInputChange("consent", checked as boolean)}
+                          onCheckedChange={(checked: boolean) => handleInputChange("consent", checked)}
                           className={`border-gray-400 data-[state=checked]:bg-blue-500 ${validationErrors.consent ? 'border-red-500' : ''}`}
                           required
                         />
                         <Label htmlFor="consent" className={`text-sm text-gray-700 leading-relaxed ${validationErrors.consent ? 'text-red-500' : ''}`}>
-                          J&apos;accepte de recevoir des informations d&apos;orientation et des conseils par téléphone pour m&apos;aider
+                          J'accepte de recevoir des informations d'orientation et des conseils par téléphone pour m'aider
                           dans mon parcours professionnel. <span className="text-red-500">*</span>
                         </Label>
                       </div>

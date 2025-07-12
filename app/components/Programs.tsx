@@ -36,7 +36,7 @@ const programs = [
     id: 3,
     title: "Aide Soignant",
     description: "Formation d'aide soignant pour soutenir l'équipe médicale dans les soins quotidiens aux patients",
-    duration: "18 mois",
+    duration: "1 an",
     level: "3ème Année collège",
     students: "Formation accélérée",
     image: "/program-nurse-3.webp",

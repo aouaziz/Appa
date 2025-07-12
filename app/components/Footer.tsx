@@ -1,10 +1,11 @@
 "use client"
 
-import { motion } from "framer-motion"
-import { useInView } from "framer-motion"
+import { motion, useInView} from "framer-motion"
 import { useRef } from "react"
 import Image from "next/image"
 import { Facebook, Instagram, Youtube, ChevronUp } from "lucide-react"
+import Link from "next/link"
+import { programsData } from "../data/programs"
 
 const socialLinks = [
   {
@@ -24,8 +25,6 @@ const socialLinks = [
   },
 ]
 
-const programs = ["INFIRMIER(E) POLYVALENT(E)", "INFIRMIER(E) AUXILIAIRE", "AIDE SOIGNANT"]
-
 export default function Footer() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
@@ -36,8 +35,8 @@ export default function Footer() {
   const logo = "/logo.webp"
   return (
     <footer className="bg-gray-50 text-gray-800 relative" ref={ref}>
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-2 py-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 text-center md:text-left">
           {/* Logo and Description */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -45,7 +44,7 @@ export default function Footer() {
             transition={{ duration: 0.8 }}
             className="lg:col-span-1"
           >
-            <div className="mb-4">
+            <div className="mb-4 flex justify-center md:justify-start">
               <Image src={ logo || "/placeholder.svg"}  
                 alt="APPA Logo" 
                 width={120} 
@@ -53,7 +52,7 @@ export default function Footer() {
                 className="h-12 w-auto" 
               />
             </div>
-            <p className="text-gray-600 text-sm leading-relaxed">Bienvenue à l&apos;African Paramedical Private Academy</p>
+            <p className="text-gray-600 text-sm leading-relaxed md:text-left text-center">Bienvenue à l'African Paramedical Private Academy</p>
           </motion.div>
 
           {/* Social Media */}
@@ -62,8 +61,8 @@ export default function Footer() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <h3 className="text-lg font-semibold mb-4 text-gray-900">Social Media :</h3>
-            <div className="space-y-3">
+            <h3 className="text-lg font-semibold mb-4 text-gray-900 md:text-left text-center">Social Media :</h3>
+            <div className="space-y-3 flex flex-col items-center md:items-start">
               {socialLinks.map((social) => (
                 <a
                   key={social.name}
@@ -85,12 +84,16 @@ export default function Footer() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            <h3 className="text-lg font-semibold mb-4 text-gray-900">Nos formations</h3>
-            <div className="space-y-2">
-              {programs.map((program) => (
-                <div key={program} className="text-sm text-gray-600">
-                  {program}
-                </div>
+            <h3 className="text-lg font-semibold mb-4 text-gray-900 md:text-left text-center">Nos formations</h3>
+            <div className="space-y-2 flex flex-col items-center md:items-start">
+              {programsData.map((program) => (
+                <Link
+                  key={program.slug}
+                  href={`/admission/${program.slug}`}
+                  className="text-sm text-gray-600 hover:text-teal-600 transition-colors duration-300 block"
+                >
+                  {program.pageTitle}
+                </Link>
               ))}
             </div>
           </motion.div>
@@ -101,8 +104,8 @@ export default function Footer() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            <h3 className="text-lg font-semibold mb-4 text-gray-900">Address</h3>
-            <div className="space-y-2 text-sm text-gray-600">
+            <h3 className="text-lg font-semibold mb-4 text-gray-900 md:text-left text-center">Address</h3>
+            <div className="space-y-2 text-sm text-gray-600 md:text-left text-center">
               <p>Appa – 168 Bd Oued Oum Rabia,</p>
               <p>Casablanca 20250</p>
               <p className="mt-4 font-medium">+212 665 721 081</p>

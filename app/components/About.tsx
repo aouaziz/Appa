@@ -1,7 +1,6 @@
 "use client"
 
-import { motion } from "framer-motion"
-import { useInView } from "framer-motion"
+import { motion, useInView } from "framer-motion"
 import { useRef } from "react"
 import { Target, Users, Lightbulb } from "lucide-react"
 
@@ -22,10 +21,9 @@ const highlights = [
     icon: Lightbulb,
     title: "Notre Vision",
     description:
-      "Devenir la référence en formation paramédicale en Afrique, reconnue pour l&apos;excellence de ses programmes et la qualité de ses diplômés.",
+      "Devenir la référence en formation paramédicale en Afrique, reconnue pour l'excellence de ses programmes et la qualité de ses diplômés.",
   },
 ]
-
 
 export default function About() {
   const ref = useRef(null)
@@ -34,46 +32,50 @@ export default function About() {
   return (
     <section id="about" className="py-32 bg-gradient-to-b from-gray-50 to-white" ref={ref}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-20 items-center">
-          {/* Left Content */}
+        {/* Enhanced Title Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 1.2, delay: 0.2 }}
+          className="text-center mb-16"
+        >
+          <motion.h2
+            className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight tracking-wide inline-flex items-center flex-wrap justify-center"
+            initial={{ scale: 0.9 }}
+            animate={isInView ? { scale: 1 } : {}}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
+            Bienvenue à l'
+            <span className="text-blue-600 font-semibold mx-2">African Paramedical</span>
+            <span className="text-teal-600 font-semibold">Private Academy</span>
+          </motion.h2>
+          <motion.div
+            initial={{ width: 0 }}
+            animate={isInView ? { width: "100px" } : {}}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="h-1 bg-gradient-to-r from-blue-600 to-teal-600 mx-auto mt-6 rounded-full"
+          />
+        </motion.div>
+
+        {/* Video and Paragraph in the same row with vertical centering */}
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Paragraph */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8 }}
-            className="space-y-8"
+            transition={{ duration: 0.8, delay: 0.5 }}
+            className="flex items-center justify-center"
           >
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="inline-flex items-center px-6 py-3 bg-blue-100 rounded-full text-blue-700 text-sm font-medium"
-            >
-              À PROPOS DE NOUS
-            </motion.div>
-
-            <motion.h2
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="text-4xl lg:text-6xl font-bold text-gray-900 leading-tight"
-            >
-              Bienvenue à l&apos;
-              <span className="block text-blue-600 mt-2">African Paramedical</span>
-              <span className="block text-teal-600">Private Academy</span>
-            </motion.h2>
-
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              className="text-xl text-gray-600 leading-relaxed"
+              transition={{ duration: 0.6, delay: 0.7 }}
+              className="text-lg sm:text-xl md:text-2xl text-gray-600 leading-relaxed text-center max-w-prose"
             >
-              APPA s&apos;engage à former la prochaine génération de professionnels de santé avec des standards d&apos;excellence
+              APPA s'engage à former la prochaine génération de professionnels de santé avec des standards d'excellence
               reconnus. Notre académie offre des formations spécialisées en soins infirmiers et paramédicaux, adaptées
               aux besoins du secteur de la santé au Maroc et en Afrique.
             </motion.p>
-
-
           </motion.div>
 
           {/* Right Content - YouTube Video */}
@@ -136,7 +138,7 @@ export default function About() {
           transition={{ duration: 0.8, delay: 0.8 }}
           className="mt-24"
         >
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-11">
             {highlights.map((highlight, index) => (
               <motion.div
                 key={highlight.title}
